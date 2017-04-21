@@ -1,5 +1,9 @@
 var express = require("express");
-var app = express();
+var app = express(),
+	bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
 //	sdk = new BoxSDK({
 //		clientID: 'vqwdc5l2kqbf7o29izbircp3s6gjznf0',
 //		clientSecret: 'IQ7mSLqLRv0IvIr8djqhbWQmCkYarInK',
@@ -130,4 +134,25 @@ app.get("/api/getfilemetadata/:id", function(request, response) {
 		}
 	});
 });
+
+// Not fully working :)
+app.post("/api/setfilemetadata/:id", function (request, response){
+	var id = request.params.id;
+	console.log(id);
+	console.log(request.body);
+	var patch =   [
+			{ "op": "add", "path": "/hello", "value": "world" }
+		];
+	client.files.updateMetadata(id, client.metadata.scopes.GLOBAL,
+			client.metadata.templates.PROPERTIES, patch, function(err, res) {
+
+		if(err) {
+			response.send(err);
+		}
+		else {
+			response.send(res);
+		}
+	});
+});
+
 
