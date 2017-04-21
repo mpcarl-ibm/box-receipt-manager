@@ -1,5 +1,9 @@
 var express = require("express");
 var app = express();
+//	sdk = new BoxSDK({
+//		clientID: 'vqwdc5l2kqbf7o29izbircp3s6gjznf0',
+//		clientSecret: 'IQ7mSLqLRv0IvIr8djqhbWQmCkYarInK',
+//});
 var cfenv = require("cfenv");
 var bodyParser = require('body-parser')
 
@@ -62,44 +66,60 @@ app.get("/api/visitors", function (request, response) {
   });
 });
 
-/*
-// load local VCAP configuration  and service credentials
-var vcapLocal;
-try {
-  vcapLocal = require('./vcap-local.json');
-  console.log("Loaded local VCAP", vcapLocal);
-} catch (e) { }
-
-const appEnvOpts = vcapLocal ? { vcap: vcapLocal} : {}
-
-const appEnv = cfenv.getAppEnv(appEnvOpts);
-
-if (appEnv.services['cloudantNoSQLDB']) {
-  // Load the Cloudant library.
-  var Cloudant = require('cloudant');
-
-  // Initialize database with credentials
-  var cloudant = Cloudant(appEnv.services['cloudantNoSQLDB'][0].credentials);
-
-  //database name
-  var dbName = 'mydb';
-
-  // Create a new "mydb" database.
-  cloudant.db.create(dbName, function(err, data) {
-    if(!err) //err if database doesn't already exists
-      console.log("Created database: " + dbName);
-  });
-
-  // Specify the database we are going to use (mydb)...
-  mydb = cloudant.db.use(dbName);
-}
-*/
-//serve static file (index.html, images, css)
 app.use(express.static(__dirname + '/views'));
-
-
 
 var port = process.env.PORT || 3000
 app.listen(port, function() {
     console.log("To view your app, open this link in your browser: http://localhost:" + port);
 });
+
+
+// Box things
+//Initialize SDK
+
+var BoxSDK = require('box-node-sdk');
+var sdk = new BoxSDK({
+	  clientID: '10psittpqbnqgvcm1twksvtoyfqyex2k',
+	  clientSecret: 'APehX2FXVEFdHyqR9Gtu5NYUk42EryyZ'
+	});
+
+	// Create a basic API client
+var client = sdk.getBasicClient('2zgA2UveMmRZxWj57smnLsgX83MbRJDc');
+/*
+//Get some of that sweet, sweet data!
+client.users.get(client.CURRENT_USER_ID, null, function(err, currentUser) {
+  if(err) throw err;
+  console.log('Hello, ' + currentUser.name + '!');
+});
+*/
+
+app.post("/api/getlist", function (request, response) {
+	var id = request.body.id;
+	if (id == null)
+			id = 24655132539;
+	client.folders.getItems(id, null, function(err, res) {
+		if(err) {
+			response.send('ERROR');
+		}
+		else {
+			response.send(res);
+		}
+	});
+});
+
+app.get("/api/getlist", function (request, response) {
+	var id = request.body.id;
+	if (id == null)
+		id = 24655132539;
+	client.folders.getItems(id, null, function(err, res) {
+		if(err) {
+			response.send('ERROR');
+		}
+		else {
+			response.send(res)
+		}
+	});
+});
+
+
+
