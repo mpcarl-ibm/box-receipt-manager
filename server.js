@@ -88,7 +88,7 @@ var sdk = new BoxSDK({
 	});
 
 	// Create a basic API client
-var client = sdk.getBasicClient('9xWFu2LQXTEHeAGNqvQMK3pCokwti5bx');
+var client = sdk.getBasicClient('SS1TauK0t1MmvDNcwavAX7gX6qhprj3o');
 /*
 //Get some of that sweet, sweet data!
 client.users.get(client.CURRENT_USER_ID, null, function(err, currentUser) {
