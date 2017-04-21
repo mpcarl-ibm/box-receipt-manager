@@ -93,22 +93,8 @@ client.users.get(client.CURRENT_USER_ID, null, function(err, currentUser) {
 });
 */
 
-app.post("/api/getlist", function (request, response) {
-	var id = request.body.id;
-	if (id == null)
-			id = 24655132539;
-	client.folders.getItems(id, null, function(err, res) {
-		if(err) {
-			response.send('ERROR');
-		}
-		else {
-			response.send(res);
-		}
-	});
-});
-
 app.get("/api/getlist", function (request, response) {
-	var id = request.body.id;
+	var id = request.param.id;
 	if (id == null)
 		id = 24655132539;
 	client.folders.getItems(id, null, function(err, res) {
@@ -121,5 +107,27 @@ app.get("/api/getlist", function (request, response) {
 	});
 });
 
+app.get("/api/getfileinfo/:id", function(request, response) {
+	var id = request.params.id;
+	client.files.get(id, null, function(err, res) {
+		if(err) {
+			response.send('ERROR');
+		}
+		else {
+			response.send(res);
+		}
+	});
+});
 
+app.get("/api/getfilemetadata/:id", function(request, response) {
+	var id = request.params.id;
+	client.files.getAllMetadata(id, function(err, res) {
+		if(err) {
+			response.send('ERROR');
+		}
+		else {
+			response.send(res);
+		}
+	});
+});
 
