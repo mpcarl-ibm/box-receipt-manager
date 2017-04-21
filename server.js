@@ -62,7 +62,7 @@ app.get("/api/visitors", function (request, response) {
   });
 });
 
-
+/*
 // load local VCAP configuration  and service credentials
 var vcapLocal;
 try {
@@ -93,7 +93,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
   // Specify the database we are going to use (mydb)...
   mydb = cloudant.db.use(dbName);
 }
-
+*/
 //serve static file (index.html, images, css)
 app.use(express.static(__dirname + '/views'));
 
