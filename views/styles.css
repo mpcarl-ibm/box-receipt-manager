@@ -1,3 +1,129 @@
-.helloInput {
-  width: 200px;
+.section {
+  margin-top: 50px;
 }
+.subSection {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+/*.footer {
+  margin-top: 30px;
+}*/
+hr {
+    margin-top: -17px;
+}
+#noResponse {
+  display: none;
+  font-size: 20px;
+  color: red;
+  margin-top: 30px;
+}
+#noResponse.active {
+  display: block;
+}
+/*.loader {
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 30px;
+  height: 30px;
+  -webkit-animation: spin 0.5s linear infinite;
+  animation: spin 0.5s linear infinite;
+  margin: auto;
+  margin-top: 30px;
+  display: none;
+}
+.loader.active {
+  display: block;
+}
+.requiredMessage {
+  display: none;
+  float: right;
+  margin-top: 20px;
+  font-size: 15px;
+}
+.requiredMessage.active {
+  display: inline;
+}
+.invalidURL {
+  display: none;
+  float: right;
+  margin-top: 20px;
+  font-size: 15px;
+}
+.invalidURL.active {
+  display: inline;
+}
+.convert {
+  margin-top: 20px;
+  display: inline-block;
+}
+.result {
+  padding-top: 30px;
+}
+.resultItem {
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  min-height: 50px;
+  padding: 10px;
+}
+.resultURL {
+  word-wrap: break-word;
+}
+.copy {
+  display: inline-block;
+}
+#invalidArticle {
+  display: none;
+  font-size: 20px;
+  color: red;
+  margin-top: 30px;
+}
+#invalidArticle.active {
+  display: block;
+}
+.urlHeader {
+  display: inline;
+  white-space: nowrap;
+}
+.clearButton {
+  display: inline-block;
+  float: right;
+  margin-top: -5px;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#invalidFile {
+  display: none;
+  font-size: 20px;
+  color: red;
+  margin-top: 30px;
+}
+#invalidFile.active {
+  display: block;
+}
+#noURLFound {
+  display: none;
+  font-size: 20px;
+  color: red;
+  margin-top: 30px;
+}
+#noURLFound.active {
+  display: block;
+}
+.logText {
+  overflow-y: scroll;
+}
+#downloadLinkHidden {
+  display:none;
+}
+#downloadFileButton {
+  display:none;
+}*/

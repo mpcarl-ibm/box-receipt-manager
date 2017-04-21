@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Receipt editor</title>
+    <title>Receipt management tool</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -14,14 +14,34 @@
 
 <body>
     <div class="container">
-        <h1>Welcome.</h1>
-        <div id="nameInput" class="input-group-lg center-block helloInput">
-            <p class="lead">What is your name?</p>
-            <input id="user_name" type="text" class="form-control" placeholder="name" aria-describedby="sizing-addon1" value="" />
+        <div class="page-header">
+            <h2>Receipt management tool</h2>
         </div>
-        <p id="response" class="lead text-center"></p>
 
-        <p id="databaseNames" class="lead text-center"></p>
+
+        <div class="section">
+            <p class="lead">Files:</p>
+            <hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Created at</th>
+                        <th>Modified at</th>
+                        <th>Store</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+
+
+                </tbody>
+                <p id="noResponse" class="lead text-center">No response</p>
+            </table>
+        </div>
+        <div class="section">
+            <button id="fetchButton" type="button" class="btn btn-primary">Fetch receipts from email</button>
+             <p iclass="lead text-center">Fetches receipts from emails using email apis(gmail, yahoo mail, etc). Adds Metadata(store, totals, tax, etc) to them, stores them in box and displays them in the above file list.</p>
+        </div>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -29,39 +49,38 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <script>
-    	//Submit data when enter key is pressed
-        $('#user_name').keydown(function(e) {
-        	var name = $('#user_name').val();
-            if (e.which == 13 && name.length > 0) { //catch Enter key
-            	//POST request to API to create a new visitor entry in the database
-                $.ajax({
-				  method: "POST",
-				  url: "./api/visitors",
-				  contentType: "application/json",
-				  data: JSON.stringify({name: name })
-				})
-                .done(function(data) {
-                    $('#response').html(data);
-                    $('#nameInput').hide();
-                    getNames();
+        $('#noResponse').removeClass('active');
+        $.get("/api/getlist").done(function (data) {
+            if (!data || jQuery.isEmptyObject(data)) {
+                $('#noResponse').addClass('active');
+            } else {
+
+                $('#noResponse').removeClass('active');
+                $.each(data.entries, function (index, entry) {
+                    var rowHtml = "";
+                    $.get("/api/getfileinfo/" + entry.id).done(function (response) {
+                        var created_date = new Date(response.created_at);
+                        var modified_date = new Date(response.modified_at);
+                        rowHtml = '<tr><td>' + entry.name + '</td><td>' + created_date.toString() + '</td><td> ' + modified_date.toString() + ' </td>';
+
+                        $.get("/api/getfilemetadata/" + entry.id).done(function (responseMeta) {
+                            if (responseMeta.entries.length > 0) {
+                                rowHtml = rowHtml + '<td>' + responseMeta.entries[0].store + '</td></tr>';
+
+                            } else {
+                                rowHtml = rowHtml + '<td style="color: red">No store info in metadata<button type="button" class="btn btn-primary">Add store info</button></td></tr>';
+                            }
+                            $('#tableBody').append(rowHtml);
+                        });
+                    });
+
                 });
             }
         });
-
-        //Retreive all the visitors from the database
-        function getNames(){
-          $.get("./api/visitors")
-              .done(function(data) {
-                  if(data.length > 0) {
-                    $('#databaseNames').html("Database contents: " + JSON.stringify(data));
-                  }
-              });
-          }
-
-          //Call getNames on page load.
-          getNames();
-
-
+        $('#fetchButton').click(function (e) {
+            var html = '<tr><td>Square_receipt.pdf</td><td>' + new Date().toString() + '</td><td> ' + new Date().toString() + ' </td><td>Square</td></tr>';
+            $('#tableBody').append(html);
+        });
     </script>
 </body>
 
